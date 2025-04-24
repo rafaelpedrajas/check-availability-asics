@@ -1,0 +1,1 @@
+*/5 * * * * root cd /app && /usr/local/bin/node bot.mjs >> /app/log.txt 2>&1

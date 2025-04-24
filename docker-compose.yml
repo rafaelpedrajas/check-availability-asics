@@ -1,0 +1,16 @@
+services:
+  asics-bot:
+    build: .
+    container_name: asics-availability
+    restart: unless-stopped
+    env_file:
+      - .env
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./db:/app/db
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
