@@ -46,5 +46,5 @@ COPY . .
 COPY cronjob /etc/cron.d/botcron
 RUN chmod 0644 /etc/cron.d/botcron
 
-# Mantener cron corriendo en primer plano
-CMD ["cron", "-f"]
+# CMD combinado: iniciar cron y el bot de Telegram
+CMD ["/bin/sh", "-c", "cron && npm run telegram"]

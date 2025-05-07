@@ -9,10 +9,21 @@ export async function connectDB() {
     driver: sqlite3.Database,
   });
 
+  // Crear tabla de notificaciones
   await db.exec(`
     CREATE TABLE IF NOT EXISTS notifications (
       id TEXT PRIMARY KEY,
       date TEXT
+    )
+  `);
+
+  // Crear tabla de modelos y tallas a rastrear
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS watchlist (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      model TEXT NOT NULL,
+      size TEXT NOT NULL,
+      notify_id TEXT UNIQUE
     )
   `);
 }
@@ -32,4 +43,21 @@ export async function markNotified(id) {
     "INSERT OR REPLACE INTO notifications (id, date) VALUES (?, ?)",
     [id, today]
   );
+}
+
+export async function addWatch(model, size) {
+  const notify_id = `${model}-${size}`;
+  await db.run(
+    "INSERT OR IGNORE INTO watchlist (model, size, notify_id) VALUES (?, ?, ?)",
+    [model.toLowerCase(), size, notify_id]
+  );
+}
+
+export async function removeWatch(model, size) {
+  const notify_id = `${model}-${size}`;
+  await db.run("DELETE FROM watchlist WHERE notify_id = ?", [notify_id]);
+}
+
+export async function getWatchlist() {
+  return await db.all("SELECT model, size, notify_id FROM watchlist");
 }

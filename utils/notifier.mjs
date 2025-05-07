@@ -5,18 +5,17 @@ dotenv.config();
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
-export async function notifyTelegramImage({ title, image, price }) {
-
+export async function notifyTelegramImage({ title, image, price, url }) {
   try {
     if (!TELEGRAM_TOKEN || !TELEGRAM_CHAT_ID) {
       console.warn("⚠️ Falta TELEGRAM_TOKEN o TELEGRAM_CHAT_ID");
       throw new Error("⚠️ Falta TELEGRAM_TOKEN o TELEGRAM_CHAT_ID");
     }
 
-    const caption = `👟 *${title}*\n💰 Precio: ${price}`;
-    const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`;
+    const caption = `👟 *${title}*\n💰 *${price}*\n\n[🛒 Ver producto](${url})`;
+    const apiUrl = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`;
 
-    const res = await fetch(url, {
+    const res = await fetch(apiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
