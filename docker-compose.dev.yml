@@ -1,6 +1,6 @@
 services:
   asics-bot:
-    image: rafaelpedrajas/check-availability-asics:latest
+    build: .
     container_name: asics-availability
     restart: unless-stopped
     environment:
@@ -8,4 +8,6 @@ services:
       TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
     working_dir: /app
     volumes:
+      - .:/app
+      - /app/node_modules
       - ./db:/app/db
