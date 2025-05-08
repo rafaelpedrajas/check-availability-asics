@@ -3,8 +3,9 @@ services:
     build: .
     container_name: asics-availability
     restart: unless-stopped
-    env_file:
-      - .env
+    environment:
+      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
     working_dir: /app
     volumes:
       - .:/app
